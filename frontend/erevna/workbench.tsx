@@ -1033,6 +1033,7 @@ export function ErevnaWorkbench() {
         artifacts={artifacts}
         activeArtifactId={activeArtifactId}
         onSelectArtifact={setActiveArtifactId}
+        onSelectStage={setSelectedStageId}
         onDownloadArtifact={handleDownloadArtifact}
         onDownloadBundle={() => void handleDownloadBundle()}
         onDownloadPythonBundle={() => void handleDownloadPythonBundle()}
