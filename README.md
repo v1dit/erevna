@@ -45,3 +45,17 @@ curl -X POST "http://localhost:3000/api/research/literature" \
   -H "Content-Type: application/json" \
   -d '{"researchQuestion":"Does sleep quality affect student academic performance?"}'
 ```
+
+Run the Hypothesis Agent:
+
+```bash
+curl -X POST "http://localhost:3000/api/research/hypothesis" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "researchQuestion": "Does sleep quality affect student academic performance?",
+    "literatureSummary": "Sleep patterns correlate with academic outcomes in student behavior studies.",
+    "keyFindings": [
+      "Sleep patterns are strongly correlated with academic performance."
+    ]
+  }'
+```
