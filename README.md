@@ -59,3 +59,19 @@ curl -X POST "http://localhost:3000/api/research/hypothesis" \
     ]
   }'
 ```
+
+Run the first pipeline stages together:
+
+```bash
+curl -X POST "http://localhost:3000/api/research/run" \
+  -H "Content-Type: application/json" \
+  -d '{"researchQuestion":"Does sleep quality affect student academic performance?","maxResults":2}'
+```
+
+Stream status events for the run:
+
+```bash
+curl -N -X POST "http://localhost:3000/api/research/run" \
+  -H "Content-Type: application/json" \
+  -d '{"researchQuestion":"Does sleep quality affect student academic performance?","maxResults":2,"stream":true}'
+```
