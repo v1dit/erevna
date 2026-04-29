@@ -1,0 +1,12 @@
+[project]
+name = "erevna-reboot-mcp"
+version = "0.1.0"
+description = "Minimal Reboot DurableMCP endpoint for Erevna research agents."
+readme = "README.txt"
+requires-python = ">=3.12.11"
+dependencies = [
+  "durable-mcp",
+]
+
+[tool.uv]
+package = false
