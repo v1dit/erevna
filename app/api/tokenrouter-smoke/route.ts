@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import {
-  generateTokenRouterText,
+  generateResearchAgentText,
   TokenRouterConfigError,
   TokenRouterRequestError,
-} from "@/lib/research-lab/token-router-client";
+} from "@/lib/research-lab/agent-llm";
 
 export async function GET() {
   if (process.env.NODE_ENV !== "development") {
@@ -17,7 +17,7 @@ export async function GET() {
   }
 
   try {
-    const result = await generateTokenRouterText({
+    const result = await generateResearchAgentText({
       agent: "SmokeTest",
       messages: [
         {

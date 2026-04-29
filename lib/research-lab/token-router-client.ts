@@ -1,6 +1,7 @@
-const DEFAULT_TOKENROUTER_BASE_URL = "https://api.tokenrouter.io/v1";
-const DEFAULT_TOKENROUTER_MODEL = "auto:balance";
+const DEFAULT_TOKENROUTER_BASE_URL = "https://api.tokenrouter.com/v1";
+const DEFAULT_TOKENROUTER_MODEL = "openai/gpt-4o-mini";
 const TOKENROUTER_TIMEOUT_MS = 30_000;
+const TOKENROUTER_APP_ID = "research-lab-ai";
 
 export type TokenRouterMessage = {
   role: "system" | "user" | "assistant";
@@ -16,6 +17,8 @@ export type TokenRouterUsage = {
 
 export type TokenRouterTextResult = {
   text: string;
+  requestedModel: string;
+  baseURL: string;
   model?: string;
   provider?: string;
   usage?: TokenRouterUsage;
@@ -105,7 +108,7 @@ export async function generateTokenRouterText({
         temperature,
         max_tokens: maxTokens,
         user: JSON.stringify({
-          app: "research-lab-ai",
+          app: TOKENROUTER_APP_ID,
           agent,
         }),
       }),
@@ -133,6 +136,8 @@ export async function generateTokenRouterText({
 
     return {
       text,
+      requestedModel: requestModel,
+      baseURL,
       model: chatResponse.model ?? requestModel,
       provider: chatResponse.provider,
       usage: chatResponse.usage,

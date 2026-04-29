@@ -10,7 +10,7 @@ export default function HomePage() {
         </p>
         <div className="status-grid" aria-label="Current integration status">
           <span>Model</span>
-          <strong>auto:balance</strong>
+          <strong>openai/gpt-4o-mini</strong>
           <span>Smoke route</span>
           <strong>/api/tokenrouter-smoke</strong>
           <span>Runtime</span>
