@@ -65,6 +65,17 @@ export type HypothesisAgentResult = {
   suggestedFeatures: string[];
 };
 
+export type ResearchSynthesisResult = {
+  headline: string;
+  shortExplanation: string;
+  takeaways: string[];
+  warnings: string[];
+  failureModes: string[];
+  nextExperiments: string[];
+  limitations: string[];
+  reportMarkdown: string;
+};
+
 type ArxivFeed = {
   feed?: {
     entry?: ArxivEntry | ArxivEntry[];
@@ -101,6 +112,17 @@ type HypothesisSynthesis = {
   hypothesis: string;
   predictedTarget: string;
   suggestedFeatures: string[];
+};
+
+type ResearchSynthesisJson = {
+  headline?: unknown;
+  shortExplanation?: unknown;
+  takeaways?: unknown;
+  warnings?: unknown;
+  failureModes?: unknown;
+  nextExperiments?: unknown;
+  limitations?: unknown;
+  reportMarkdown?: unknown;
 };
 
 const xmlParser = new XMLParser({

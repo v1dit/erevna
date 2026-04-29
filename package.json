@@ -9,12 +9,17 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@types/papaparse": "^5.5.2",
+    "cytoscape": "^3.30.4",
     "fast-xml-parser": "^5.7.2",
+    "jszip": "^3.10.1",
     "next": "^16.2.4",
+    "papaparse": "^5.5.3",
     "react": "^19.2.5",
     "react-dom": "^19.2.5"
   },
   "devDependencies": {
+    "@types/cytoscape": "^3.21.9",
     "@types/node": "^24.9.1",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
