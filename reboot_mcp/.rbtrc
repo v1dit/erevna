@@ -1,0 +1,3 @@
+dev run --no-generate-watch
+dev run --python --application=main.py
+dev run --watch=**/*.py

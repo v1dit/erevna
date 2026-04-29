@@ -75,3 +75,7 @@ curl -N -X POST "http://localhost:3000/api/research/run" \
   -H "Content-Type: application/json" \
   -d '{"researchQuestion":"Does sleep quality affect student academic performance?","maxResults":2,"stream":true}'
 ```
+
+## MCP (Reboot)
+
+Optional **Reboot `durable-mcp`** server in `reboot_mcp/` exposes **`http://127.0.0.1:9991/mcp`** for agent tool calls (see `reboot_mcp/README.txt`). Run **`npm run dev`** for the Next app and **`uv run rbt dev run`** in `reboot_mcp` with Docker running.
