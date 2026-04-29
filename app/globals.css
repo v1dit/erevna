@@ -107,3 +107,53 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+
+/* ── Theme toggle ─────────────────────────────────────── */
+
+.theme-toggle {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 100;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--panel);
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color 140ms ease, color 140ms ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── Light mode ───────────────────────────────────────── */
+
+[data-theme="light"] {
+  color-scheme: light;
+  --ink: #111820;
+  --muted: #4a5260;
+  --line: rgba(17, 24, 32, 0.12);
+  --panel: rgba(255, 255, 255, 0.88);
+  --accent: #b8902e;
+  --field: #ede9e2;
+}
+
+[data-theme="light"] body {
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    radial-gradient(circle at 24% 18%, rgba(184, 144, 46, 0.12), transparent 28%),
+    #f5f0e8;
+  background-size: 44px 44px, 44px 44px, auto, auto;
+}
+
+[data-theme="light"] .status-panel {
+  box-shadow: 0 32px 90px rgba(0, 0, 0, 0.1);
+}
