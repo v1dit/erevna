@@ -337,7 +337,7 @@ export function buildStageIntel(
 export function visibleVisualizations(
   runResult: LabRunResult | null,
   messages: ShellMessage[],
-  selectedStageId: string,
+  _selectedStageId: string,
 ): Visualization[] {
   if (!runResult) {
     return [];
@@ -348,11 +348,13 @@ export function visibleVisualizations(
     -1,
   );
 
-  const unlocked = runResult.visualizations.filter(
+  // Return every visualization unlocked by progress so far. The topology
+  // matrix and stage intel still react to the selected stage, but the
+  // EVIDENCE panel surfaces all graphs at once so users do not have to
+  // click around to see them.
+  return runResult.visualizations.filter(
     (visualization) => stageIndex(visualization.stageId) <= maxVisibleStage,
   );
-  const focused = unlocked.filter((visualization) => visualization.stageId === selectedStageId);
-  return focused.length ? focused : unlocked;
 }
 
 export function downloadableArtifacts(runResult: LabRunResult | null): DownloadableArtifact[] {
