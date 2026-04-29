@@ -849,6 +849,27 @@ pre {
   background: var(--green-tint-soft);
 }
 
+button.mini-node-pill-clickable {
+  cursor: pointer;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  transition: background 120ms ease, border-color 120ms ease, transform 120ms ease;
+}
+
+button.mini-node-pill-clickable:hover {
+  background: var(--green-tint);
+  border-color: var(--green-deep);
+  color: var(--green-deep);
+  transform: translateY(-1px);
+}
+
+button.mini-node-pill-clickable:focus-visible {
+  outline: 2px solid var(--green-deep);
+  outline-offset: 2px;
+}
+
 /* ── Exports ──────────────────────────────────────────── */
 
 .artifact-preview,
