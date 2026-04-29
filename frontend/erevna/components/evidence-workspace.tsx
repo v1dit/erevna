@@ -25,6 +25,7 @@ type EvidenceWorkspaceProps = {
   artifacts: DownloadableArtifact[];
   activeArtifactId: string | null;
   onSelectArtifact: (artifactId: string) => void;
+  onSelectStage?: (stageId: string) => void;
   onDownloadArtifact: (artifact: DownloadableArtifact) => void;
   onDownloadBundle: () => void;
   onDownloadPythonBundle: () => void;
@@ -43,6 +44,7 @@ export function EvidenceWorkspace({
   artifacts,
   activeArtifactId,
   onSelectArtifact,
+  onSelectStage,
   onDownloadArtifact,
   onDownloadBundle,
   onDownloadPythonBundle,
@@ -127,7 +129,11 @@ export function EvidenceWorkspace({
           {visualizations.length ? (
             <div className="visualization-grid">
               {visualizations.map((visualization) => (
-                <VisualizationCard key={visualization.id} visualization={visualization} />
+                <VisualizationCard
+                  key={visualization.id}
+                  visualization={visualization}
+                  onSelectStage={onSelectStage}
+                />
               ))}
             </div>
           ) : (
@@ -390,19 +396,31 @@ function PredictionField({
   );
 }
 
-function VisualizationCard({ visualization }: { visualization: Visualization }) {
+function VisualizationCard({
+  visualization,
+  onSelectStage,
+}: {
+  visualization: Visualization;
+  onSelectStage?: (stageId: string) => void;
+}) {
   return (
     <article className="viz-card">
       <div className="viz-header">
         <span className="shell-kicker">{visualization.type.replaceAll("_", " ")}</span>
         <h4>{visualization.title}</h4>
       </div>
-      <VisualizationSurface visualization={visualization} />
+      <VisualizationSurface visualization={visualization} onSelectStage={onSelectStage} />
     </article>
   );
 }
 
-function VisualizationSurface({ visualization }: { visualization: Visualization }) {
+function VisualizationSurface({
+  visualization,
+  onSelectStage,
+}: {
+  visualization: Visualization;
+  onSelectStage?: (stageId: string) => void;
+}) {
   const variant = visualizationVariant(visualization.type);
   switch (variant) {
     case "bars":
@@ -412,7 +430,7 @@ function VisualizationSurface({ visualization }: { visualization: Visualization 
     case "line":
       return <LineVisualization visualization={visualization} />;
     case "graph":
-      return <GraphVisualization visualization={visualization} />;
+      return <GraphVisualization visualization={visualization} onSelectStage={onSelectStage} />;
     default:
       return (
         <div className="viz-fallback">
@@ -552,18 +570,39 @@ function LineVisualization({ visualization }: { visualization: Visualization }) 
   );
 }
 
-function GraphVisualization({ visualization }: { visualization: Visualization }) {
+function GraphVisualization({
+  visualization,
+  onSelectStage,
+}: {
+  visualization: Visualization;
+  onSelectStage?: (stageId: string) => void;
+}) {
   const data = visualization.data as { nodes?: string[]; edges?: string[][] } | undefined;
   const nodes = data?.nodes ?? [];
   const edges = data?.edges ?? [];
   return (
     <div className="mini-graph-shell">
       <div className="mini-node-row">
-        {nodes.map((node) => (
-          <span key={node} className="mini-node-pill">
-            {node}
-          </span>
-        ))}
+        {nodes.map((node) => {
+          const stageId = stageIdForLabel(node);
+          if (stageId && onSelectStage) {
+            return (
+              <button
+                key={node}
+                type="button"
+                className="mini-node-pill mini-node-pill-clickable"
+                onClick={() => onSelectStage(stageId)}
+              >
+                {node}
+              </button>
+            );
+          }
+          return (
+            <span key={node} className="mini-node-pill">
+              {node}
+            </span>
+          );
+        })}
       </div>
       <div className="mini-edge-row">
         {edges.slice(0, 10).map(([from, to], index) => (
@@ -577,6 +616,29 @@ function GraphVisualization({ visualization }: { visualization: Visualization })
       </p>
     </div>
   );
+}
+
+function stageIdForLabel(label: string): string | null {
+  const normalized = label.trim().toLowerCase().replace(/\s+/g, "-");
+  // Map experiment-graph node labels (Title Case) back to STAGES ids.
+  const aliases: Record<string, string> = {
+    "source-intake": "source-intake",
+    "source-resolution": "source-resolution",
+    "schema-profiling": "schema-profiling",
+    "target-framing": "target-framing",
+    preprocessing: "preprocessing",
+    baseline: "baseline",
+    "linear-model": "linear-model",
+    "tree-model": "tree-model",
+    "boosted-model": "boosted-model",
+    evaluation: "evaluation",
+    critic: "critic",
+    export: "export",
+    "literature-review": "literature-review",
+    papers: "literature-review",
+    hypothesis: "hypothesis",
+  };
+  return aliases[normalized] ?? null;
 }
 
 function toBarRow(visualization: Visualization, record: Record<string, unknown>, index: number) {
