@@ -59,6 +59,12 @@ export type LiteratureAgentResult = {
   keyFindings: string[];
 };
 
+export type HypothesisAgentResult = {
+  hypothesis: string;
+  predictedTarget: string;
+  suggestedFeatures: string[];
+};
+
 type ArxivFeed = {
   feed?: {
     entry?: ArxivEntry | ArxivEntry[];
@@ -89,6 +95,12 @@ type ArxivLink = {
 type LiteratureSynthesis = {
   summary: string;
   keyFindings: string[];
+};
+
+type HypothesisSynthesis = {
+  hypothesis: string;
+  predictedTarget: string;
+  suggestedFeatures: string[];
 };
 
 const xmlParser = new XMLParser({
@@ -151,6 +163,54 @@ export async function runLiteratureAgent({
     papers,
     summary: normalizeWhitespace(synthesis.json.summary),
     keyFindings: normalizeKeyFindings(synthesis.json.keyFindings),
+  };
+}
+
+export async function runHypothesisAgent({
+  researchQuestion,
+  literatureSummary,
+  keyFindings = [],
+}: {
+  researchQuestion: string;
+  literatureSummary: string;
+  keyFindings?: string[];
+}): Promise<HypothesisAgentResult> {
+  const question = researchQuestion.trim();
+  const summary = literatureSummary.trim();
+
+  if (!question) {
+    throw new Error("A research question is required.");
+  }
+
+  if (!summary) {
+    throw new Error("A literature summary is required.");
+  }
+
+  const synthesis = await generateResearchAgentJson<HypothesisSynthesis>({
+    agent: "HypothesisAgent",
+    messages: [
+      {
+        role: "system",
+        content:
+          "You are the Hypothesis Agent for Research Lab AI. Use the research question and literature synthesis to form one testable empirical hypothesis. Return strict JSON with exactly these keys: hypothesis, predictedTarget, suggestedFeatures. predictedTarget must be a concise variable name. suggestedFeatures must be an array of concise feature names likely to exist in a dataset.",
+      },
+      {
+        role: "user",
+        content: JSON.stringify({
+          researchQuestion: question,
+          literatureSummary: summary,
+          keyFindings: normalizeKeyFindings(keyFindings),
+        }),
+      },
+    ],
+    temperature: 0.2,
+    maxTokens: 500,
+  });
+
+  return {
+    hypothesis: normalizeWhitespace(synthesis.json.hypothesis),
+    predictedTarget: normalizeVariableName(synthesis.json.predictedTarget),
+    suggestedFeatures: normalizeSuggestedFeatures(synthesis.json.suggestedFeatures),
   };
 }
 
@@ -292,6 +352,24 @@ function normalizeKeyFindings(findings: unknown): string[] {
     .map((finding) => normalizeWhitespace(String(finding)))
     .filter(Boolean)
     .slice(0, 8);
+}
+
+function normalizeSuggestedFeatures(features: unknown): string[] {
+  if (!Array.isArray(features)) {
+    return [];
+  }
+
+  return features
+    .map((feature) => normalizeVariableName(feature))
+    .filter(Boolean)
+    .slice(0, 12);
+}
+
+function normalizeVariableName(value: unknown): string {
+  return normalizeWhitespace(value)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
 }
 
 function clampPaperLimit(maxResults: number): number {
