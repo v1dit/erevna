@@ -5,6 +5,7 @@ Autonomous research pipeline foundation for the hackathon build.
 ## What is implemented
 
 - A single server-only LLM entrypoint for research agents, backed by TokenRouter
+- A Literature Agent that retrieves arXiv papers and summarizes them through TokenRouter
 - A development smoke route for checking TokenRouter credentials and dashboard usage
 - A minimal Next.js app shell ready for the research-agent pipeline
 
@@ -36,3 +37,11 @@ The smoke route is available only in development. A successful response returns 
 ## Agent LLM calls
 
 All research agents should call `generateResearchAgentText()` or `generateResearchAgentJson()` from `lib/research-lab/agent-llm.ts`. That wrapper routes through TokenRouter using `TOKENROUTER_API_KEY`, `TOKENROUTER_BASE_URL`, and `TOKENROUTER_MODEL`.
+
+Run the Literature Agent:
+
+```bash
+curl -X POST "http://localhost:3000/api/research/literature" \
+  -H "Content-Type: application/json" \
+  -d '{"researchQuestion":"Does sleep quality affect student academic performance?"}'
+```
