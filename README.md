@@ -159,7 +159,7 @@ Each phase of research is handled by a specialized agent:
 
 | Agent            | Role                                        |
 | ---------------- | ------------------------------------------- |
-| Literature Agent | Searches Arxiv and summarizes relevant work |
+| Literature Agent | Searches arXiv and summarizes relevant work |
 | Hypothesis Agent | Generates testable hypothesis + features    |
 | Data Agent       | Parses and prepares dataset                 |
 | Modeling Agent   | Trains and evaluates ML models              |
