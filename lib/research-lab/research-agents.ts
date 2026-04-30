@@ -259,6 +259,11 @@ export async function fetchArxivPapers({
   return [];
 }
 
+// arXiv asks for ≤1 request every 3 seconds. We retry up to 3 times on 429
+// or transient 5xx errors with exponential backoff, honoring Retry-After
+// when present, so a hot-reload spam during the demo does not break the run.
+const ARXIV_RETRY_DELAYS_MS = [3_000, 6_000, 12_000];
+
 async function requestArxivPapers(
   searchQuery: string,
   maxResults: number,
@@ -270,32 +275,70 @@ async function requestArxivPapers(
   url.searchParams.set("sortBy", "relevance");
   url.searchParams.set("sortOrder", "descending");
 
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), ARXIV_TIMEOUT_MS);
+  let lastError: Error | null = null;
+  for (let attempt = 0; attempt <= ARXIV_RETRY_DELAYS_MS.length; attempt += 1) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), ARXIV_TIMEOUT_MS);
 
-  try {
-    const response = await fetch(url, {
-      headers: {
-        Accept: "application/atom+xml, application/xml;q=0.9, text/xml;q=0.8",
-      },
-      cache: "no-store",
-      signal: controller.signal,
-    });
+    try {
+      const response = await fetch(url, {
+        headers: {
+          Accept: "application/atom+xml, application/xml;q=0.9, text/xml;q=0.8",
+        },
+        cache: "no-store",
+        signal: controller.signal,
+      });
 
-    if (!response.ok) {
-      throw new Error(`arXiv request failed with status ${response.status}.`);
+      if (response.ok) {
+        return parseArxivFeed(await response.text());
+      }
+
+      const retryable = response.status === 429 || response.status >= 500;
+      lastError = new Error(`arXiv request failed with status ${response.status}.`);
+      if (!retryable || attempt === ARXIV_RETRY_DELAYS_MS.length) {
+        throw lastError;
+      }
+      const retryAfterHeader = response.headers.get("retry-after");
+      const retryAfterMs = parseRetryAfterMs(retryAfterHeader);
+      const waitMs = retryAfterMs ?? ARXIV_RETRY_DELAYS_MS[attempt];
+      await delay(waitMs);
+      continue;
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") {
+        lastError = new Error("arXiv request timed out after 15 seconds.");
+      } else if (error instanceof Error) {
+        lastError = error;
+      } else {
+        lastError = new Error("arXiv request failed.");
+      }
+      if (attempt === ARXIV_RETRY_DELAYS_MS.length) {
+        throw lastError;
+      }
+      await delay(ARXIV_RETRY_DELAYS_MS[attempt]);
+      continue;
+    } finally {
+      clearTimeout(timeout);
     }
-
-    return parseArxivFeed(await response.text());
-  } catch (error) {
-    if (error instanceof Error && error.name === "AbortError") {
-      throw new Error("arXiv request timed out after 15 seconds.");
-    }
-
-    throw error;
-  } finally {
-    clearTimeout(timeout);
   }
+
+  throw lastError ?? new Error("arXiv request failed after retries.");
+}
+
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function parseRetryAfterMs(value: string | null): number | null {
+  if (!value) return null;
+  const seconds = Number(value);
+  if (Number.isFinite(seconds) && seconds >= 0) {
+    return Math.min(seconds * 1000, 30_000);
+  }
+  const dateMs = Date.parse(value);
+  if (Number.isFinite(dateMs)) {
+    return Math.min(Math.max(dateMs - Date.now(), 0), 30_000);
+  }
+  return null;
 }
 
 function buildArxivSearchQueries(query: string): string[] {
