@@ -8,3 +8,4 @@ One input, one run, complete research output.
 
 We built it on partners we actually trust. TokenRouter is the brain: Literature, Hypothesis, and Modeling all route through the same layer. That means we can use different models for different jobs, trade off cost against how hard we need something to think, and see usage across the system instead of guessing.
 
+Reboot gives us durable MCP-style tooling so tasks get refined instead of dying as one-off prompts. Lightspring keeps the task framing tight so what you see in the UI lines up with what you meant to ask.
