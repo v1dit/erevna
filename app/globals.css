@@ -1041,6 +1041,15 @@ button.mini-node-pill-clickable:focus-visible {
   background: var(--red-compromise);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .research-status-pulse {
+    animation: none !important;
+  }
+}
+
 @keyframes pulse {
   0%,
   100% {
