@@ -229,7 +229,7 @@ TOKENROUTER_API_KEY=your_key
 1. Submit research question
 2. Agents execute sequentially
 3. Pipeline runs automatically
-4. Output generated + pushed to Lightsprint
+4. Output generated + pushed to Lightspring
 
 ---
 
