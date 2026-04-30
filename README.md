@@ -137,9 +137,9 @@ This is what enables **true autonomy**.
 
 ---
 
-### 3. Output + Dev Layer — Lightsprint
+### 3. Output + Dev Layer — Lightspring
 
-Lightsprint is used for:
+Lightspring is used for:
 
 **Development**
 
