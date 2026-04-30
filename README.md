@@ -1,4 +1,4 @@
-#  Erevna
+# Erevna
 
 **Autonomous End-to-End Research System**
 
