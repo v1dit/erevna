@@ -196,8 +196,8 @@ Can Bitcoin’s next-week price direction be predicted from historical data?
 | ML              | Python (scikit-learn, pandas, NumPy) |
 | LLM Routing     | TokenRouter                          |
 | Agent Execution | Reboot MCP                           |
-| Data Source     | Arxiv API                            |
-| Output          | Lightsprint                          |
+| Data Source     | arXiv API                            |
+| Output          | Lightspring                          |
 
 ---
 
