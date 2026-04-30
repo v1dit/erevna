@@ -153,7 +153,7 @@ Lightspring is used for:
 
 ---
 
-## 🔬 Agents
+## Agents
 
 Each phase of research is handled by a specialized agent:
 
