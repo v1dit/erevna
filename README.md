@@ -105,7 +105,7 @@ All agent reasoning flows through TokenRouter.
 * Provides observability into token usage
 
 ```ts
-baseURL: "https://tokenrouter.url"
+baseURL: "https://api.tokenrouter.com/v1"
 ```
 
 ---
@@ -201,7 +201,7 @@ Can Bitcoin’s next-week price direction be predicted from historical data?
 
 ---
 
-## ⚡ Getting Started
+## Getting Started
 
 ```bash
 git clone https://github.com/v1dit/erevna.git
