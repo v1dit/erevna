@@ -23,7 +23,8 @@ const ibmMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: "Erevna · Autonomous Research Lab",
-  description: "Autonomous research pipeline foundation powered by TokenRouter.",
+  description:
+    "Erevna runs the full research loop: literature review, hypothesis, dataset profiling, and real ML modeling, in one workbench.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
