@@ -25,6 +25,7 @@ export const metadata: Metadata = {
   title: "Erevna · Autonomous Research Lab",
   description:
     "Erevna runs the full research loop: literature review, hypothesis, dataset profiling, and real ML modeling, in one workbench.",
+  applicationName: "Erevna",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
