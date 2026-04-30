@@ -10,6 +10,10 @@
     "tokenrouter",
     "next.js"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/v1dit/erevna.git"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
