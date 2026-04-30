@@ -1181,6 +1181,19 @@ button.mini-node-pill-clickable:focus-visible {
   }
 }
 
+@media print {
+  body {
+    background: #ffffff;
+  }
+  .erevna-command-shell {
+    padding: 0;
+  }
+  .shell-button,
+  .research-status-pulse {
+    display: none !important;
+  }
+}
+
 /* ── Home splash loader (above workbench; scroll for lab) ─ */
 
 .erevna-splash {
