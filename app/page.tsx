@@ -1,5 +1,9 @@
-import { ErevnaWorkbench } from "@/frontend/erevna/workbench";
+import { HomeWithLoader } from "@/app/home-with-loader";
 
 export default function HomePage() {
-  return <ErevnaWorkbench />;
+  return (
+    <main>
+      <HomeWithLoader />
+    </main>
+  );
 }

@@ -656,7 +656,7 @@ export function ErevnaWorkbench() {
           : "tone-idle";
 
   return (
-    <main className="erevna-command-shell">
+    <div className="erevna-command-shell">
       <section className="command-intake-row">
         <aside className="command-card source-card">
           <div className="card-header">
@@ -1052,7 +1052,7 @@ export function ErevnaWorkbench() {
           <p>{errorMessage}</p>
         </section>
       ) : null}
-    </main>
+    </div>
   );
 }
 
