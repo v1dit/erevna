@@ -204,7 +204,7 @@ Can Bitcoin’s next-week price direction be predicted from historical data?
 ## ⚡ Getting Started
 
 ```bash
-git clone https://github.com/your-repo/erevna
+git clone https://github.com/v1dit/erevna.git
 cd erevna
 npm install
 npm run dev
