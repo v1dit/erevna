@@ -2,6 +2,7 @@
   "name": "erevna",
   "version": "0.1.0",
   "private": true,
+  "description": "Erevna runs the full research loop: literature review, hypothesis, data ingestion, model training, and reporting.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
