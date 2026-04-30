@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="public/images/erevna-banner.png" alt="Erevna banner" />
+</p>
+
 # Erevna
 
 **Autonomous End-to-End Research System**
